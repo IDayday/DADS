@@ -61,7 +61,7 @@ def main():
 
     agent = DADSAgent(env=env, device=device, n_skills=4, learning_rate=3e-4)
 
-    agent.load_models()
+    agent.load_models(load_path=)
 
     # model_path = "./checkpoints/HalfCheetah-v3/09-15 09-02-20/model/params.pth"
     video_path = "./checkpoints/ant/video"

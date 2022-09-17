@@ -1,3 +1,4 @@
+from turtle import pos
 import torch
 import torch.nn.functional as funcs
 from torch.distributions.multivariate_normal import MultivariateNormal
@@ -10,12 +11,13 @@ from torch import optim
 
 
 class SkillDynamics(nn.Module):
-    def __init__(self, env_shape, skill_shape, output_shape, device, num_hidden_neurons=256, learning_rate=3e-4):
+    def __init__(self, env_shape, skill_shape, output_shape, device, pos_shape, num_hidden_neurons=256, learning_rate=3e-4):
         super(SkillDynamics, self).__init__()
         self.env_shape = env_shape
         self.skill_shape = skill_shape
         self.input_shape = env_shape + skill_shape # This includes the skill encoder
-        self.output_shape = output_shape + 2  # NOTE: we predict the delta x and delta y, despite not inputting (x ,y)!
+        self.pos_shape = pos_shape
+        self.output_shape = output_shape + pos_shape  # NOTE: we predict the delta x and delta y, despite not inputting (x ,y)! adv: I change (x,y) to pos
         self.device = device
         self.num_hidden_neurons = num_hidden_neurons  # Paper uses same number across layers and networks
         self.learning_rate = learning_rate
@@ -33,7 +35,7 @@ class SkillDynamics(nn.Module):
         # A softmax layer is used as part of gating model to decide when to use which expert. This is currently
         # implemented a Linear layer, but we should confirm this is the same as in the paper.
         # The softmax acts to choose which expert to use, there's 4 hardcoded experts, so 4 output neurons:
-        self.softmax_input = nn.Linear(self.num_hidden_neurons, 4)
+        self.softmax_input = nn.Linear(self.num_hidden_neurons, skill_shape)
         # # All experts use an identity matrix as the standard deviation.
         self.sigma = torch.eye(self.output_shape, requires_grad=False, device=self.device)
         # We don't want to update this so no gradients
@@ -77,20 +79,20 @@ class SkillDynamics(nn.Module):
         else:
             delta = next_state_distribution.sample()
 
-        delta_xy = delta[:, 0:2]
-        delta_state = delta[:, 2:]
+        delta_pos = delta[:, 0:self.pos_shape]
+        delta_state = delta[:, self.pos_shape:]
 
         next_state = state_and_skill[:, 0:self.env_shape] + delta_state
-        return next_state, delta, delta_xy, next_state_distribution
+        return next_state, delta, delta_pos, next_state_distribution
 
-    def train_model(self, current_xy_state_and_skill, next_xy_state_and_skill, verbose=False):
+    def train_model(self, current_pos_state_and_skill, next_pos_state_and_skill, verbose=False):
         self.optimizer.zero_grad(set_to_none=True)
-        current_state_and_skill = current_xy_state_and_skill[:, 2:]
+        current_state_and_skill = current_pos_state_and_skill[:, self.pos_shape:]
         # Key nuance here: The output includes delta x and delta y, but we don't input x and y.
-        pred_next_state, delta, delta_xy, distribution = self.sample_next_state(current_state_and_skill, reparam=True)
+        pred_next_state, delta, delta_pos, distribution = self.sample_next_state(current_state_and_skill, reparam=True)
         # We index after this difference as we only want delta of the state and not the space-skill concatenation
         # We want to predict the delta of x and y, so they stay in here, but we remove the skill from the end of the matrix
-        actual_delta = (next_xy_state_and_skill - current_xy_state_and_skill)[:, :-4]
+        actual_delta = (next_pos_state_and_skill - current_pos_state_and_skill)[:, :-self.skill_shape]
         # columnwise_stds = torch.std(actual_delta, dim=0)
         # columnwise_stds[columnwise_stds == 0] = 1
         # actual_delta_scaled = ((actual_delta - torch.mean(actual_delta, dim=0)) / columnwise_stds)
