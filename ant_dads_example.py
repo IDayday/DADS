@@ -1,18 +1,20 @@
 import torch
-from agent.DADSAgent import DADSAgent
-from agent.SkillDynamics import SkillDynamics
-from src.soft_actor_critic.agent.Actor import Actor
-from src.soft_actor_critic.agent.Critic import Critic
+from dads.agent.DADSAgent import DADSAgent
+from dads.agent.SkillDynamics import SkillDynamics
+from soft_actor_critic.agent.Actor import Actor
+from soft_actor_critic.agent.Critic import Critic
 from torch import optim
-from src.dads.environments.ant_truncated import Ant_Truncated_State
+from dads.environments.ant_truncated import Ant_Truncated_State
 from datetime import datetime
+import os 
+os.environ['CUDA_VISIBLE_DEVICES'] = '3'
 
 env = Ant_Truncated_State()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 agent = DADSAgent(env=env, device=device, n_skills=4, learning_rate=3e-4)
 
-agent.load_models()
+# agent.load_models()
 
 t = 0
 while True:

@@ -1,8 +1,8 @@
 import torch
 import torch.nn.functional as funcs
-from src.soft_actor_critic.agent.Actor import Actor
-from src.soft_actor_critic.agent.Critic import Critic
-from src.soft_actor_critic.agent.Memory import Memory
+from soft_actor_critic.agent.Actor import Actor
+from soft_actor_critic.agent.Critic import Critic
+from soft_actor_critic.agent.Memory import Memory
 
 
 class SACAgent:

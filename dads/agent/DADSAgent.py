@@ -1,9 +1,9 @@
 import torch
 import torch.nn.functional as funcs
 from random import randint
-from src.soft_actor_critic.agent.SACAgent import SACAgent
-from src.dads.agent.SkillDynamics import SkillDynamics
-from src.dads.agent.SkillDynamicsMemory import SkillDynamicsMemory
+from soft_actor_critic.agent.SACAgent import SACAgent
+from dads.agent.SkillDynamics import SkillDynamics
+from dads.agent.SkillDynamicsMemory import SkillDynamicsMemory
 from datetime import datetime
 
 
@@ -34,12 +34,12 @@ class DADSAgent(SACAgent):
         torch.save(self.critic_target2, "critic_target2")
 
     def load_models(self):
-        self.skill_dynamics = torch.load("skill_dynamics")
-        self.actor = torch.load("actor")
-        self.critic1 = torch.load("critic1")
-        self.critic2 = torch.load("critic2")
-        self.critic_target1 = torch.load("critic_target1")
-        self.critic_target2 = torch.load("critic_target2")
+        self.skill_dynamics = torch.load("skill_dynamics", map_location=self.device)
+        self.actor = torch.load("actor", map_location=self.device)
+        self.critic1 = torch.load("critic1", map_location=self.device)
+        self.critic2 = torch.load("critic2", map_location=self.device)
+        self.critic_target1 = torch.load("critic_target1", map_location=self.device)
+        self.critic_target2 = torch.load("critic_target2", map_location=self.device)
 
     def _sample_skill(self, skill):
         if skill is None:

@@ -10,3 +10,22 @@ Reproducing the results of the Dynamics-Aware Unsupervised Discovery of Skills p
 DADS是将**无监督与基于模型的强化学习**结合起来，这就触及到我的盲点了，我对model-base了解不多，边看论文别学习吧。
 
 后续不打算在**git**上记录学习过程，主要还是以代码复现为主，如果复现成功，再抽时间录个视频分享一下。
+
+## Results
+
+同样基于SAC的DADS实现初版已经进行了一次测试，虽说是model-base的方法，但我更感兴趣的是它的skill表现如何，之后会做与DIAYN的对比测试。
+
+#### Ant-v3
+
+|       |skill 0| skill 1| skill 2| skill 3|
+:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:
+|visualization|![](results/skill/ant/skill0.gif)| ![](results/skill/ant/skill1.gif)| ![](results/skill/ant/skill2.gif)| ![](results/skill/ant/skill3.gif)
+episode reward|-415.9|-422.9|-82.2|-380.8|
+episode step|1000|1000|308|1000
+
+    似乎有点呆，而且大多都是四脚朝天，没有沿着某个方向探索地图中的某块区域，并且这个输入的状态空间是进行了裁剪，与paper一致。
+
+## TODO
+
+- [ ] Hopper-v3
+- [ ] HalfCheetah-v3

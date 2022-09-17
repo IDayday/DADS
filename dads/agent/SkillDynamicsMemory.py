@@ -1,5 +1,5 @@
 import torch
-from src.soft_actor_critic.agent.Memory import Memory
+from soft_actor_critic.agent.Memory import Memory
 
 class SkillDynamicsMemory(Memory):
     def __init__(self, memory_length, device):
