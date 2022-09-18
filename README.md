@@ -19,7 +19,7 @@ DADS是将**无监督与基于模型的强化学习**结合起来，这就触及
 
 |       |skill 0| skill 1| skill 2| skill 3|
 :-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:
-|visualization|![](./results/skill/ant/skill0.gif)| ![](results/skill/ant/skill1.gif)| ![](results/skill/ant/skill2.gif)| ![](results/skill/ant/skill3.gif)
+|visualization|![](./results/skill/Ant/skill0.gif)| ![](results/skill/Ant/skill1.gif)| ![](results/skill/Ant/skill2.gif)| ![](results/skill/Ant/skill3.gif)
 episode reward|-415.9|-422.9|-82.2|-380.8|
 episode step|1000|1000|308|1000
 
@@ -29,7 +29,7 @@ episode step|1000|1000|308|1000
 
 |       |skill 0| skill 1| skill 2| skill 3|
 :-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:
-|visualization|![](./checkpoints/Hopper/09-17%2016-34-44/gifs/skill0.gif)| ![](./checkpoints/Hopper/09-17%2016-34-44/gifs/skill1.gif)| ![](./checkpoints/Hopper/09-17%2016-34-44/gifs/skill2.gif)| ![](./checkpoints/Hopper/09-17%2016-34-44/gifs/skill3.gif)
+|visualization|![](./results/skill/Hopper/skill0.gif)| ![](results/skill/Hopper/skill1.gif)| ![](results/skill/Hopper/skill2.gif)| ![](results/skill/Hopper/skill3.gif)
 episode reward|80.9|109.0|169.2|79.8|
 episode step|250|250|250|250
 
@@ -38,7 +38,7 @@ episode step|250|250|250|250
 #### HalfCheetah-v3
 |       |skill 0| skill 1| skill 2| skill 3|
 :-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:
-|visualization|![](./checkpoints/HalfCheetah/09-17%2016-32-42/gifs/skill0.gif)| ![](./checkpoints/HalfCheetah/09-17%2016-32-42/gifs/skill1.gif)| ![](./checkpoints/HalfCheetah/09-17%2016-32-42/gifs/skill2.gif)| ![](./checkpoints/HalfCheetah/09-17%2016-32-42/gifs/skill3.gif)
+|visualization|![](./results/skill/HalfCheetah/skill0.gif)| ![](results/skill/HalfCheetah/skill1.gif)| ![](results/skill/HalfCheetah/skill2.gif)| ![](results/skill/HalfCheetah/skill3.gif)
 episode reward|-258.0|-409.3|-180.6|-296.2|
 episode step|1000|1000|308|1000
 
