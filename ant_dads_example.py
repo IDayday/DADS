@@ -1,4 +1,3 @@
-from imageio import save
 import torch
 from dads.agent.DADSAgent import DADSAgent
 from dads.agent.SkillDynamics import SkillDynamics
@@ -28,7 +27,7 @@ if "Ant" in save_path:
     pos_shape = 2
 else:
     pos_shape = env.env.sim.data.body_xpos.size
-agent = DADSAgent(env=env, device=device, n_skills=20, learning_rate=3e-4, log_dir=log_dir, pos_shape=pos_shape)
+agent = DADSAgent(env=env, device=device, n_skills=20, learning_rate=3e-4, log_dir=log_dir, pos_shape=pos_shape, train=True)
 
 t = 0
 while True:

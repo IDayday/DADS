@@ -9,7 +9,7 @@ import logging
 import time
 
 class DADSAgent(SACAgent):
-    def __init__(self, env, device, n_skills, log_dir, pos_shape, learning_rate=3e-4, memory_length=1e5, batch_size=32, num_hidden_neurons=256):
+    def __init__(self, env, device, n_skills, pos_shape, train=False, log_dir=None, learning_rate=3e-4, memory_length=1e5, batch_size=32, num_hidden_neurons=256):
         self.n_skills = n_skills
         self.active_skill = None
         env_state_length = env.observation_space.shape[0]
@@ -25,15 +25,16 @@ class DADSAgent(SACAgent):
         self.total_games = 0
         # Overwrite the memory that the SACAgent instantiates with a new memory that additionally stores the skills:
         self.memory = SkillDynamicsMemory(memory_length=self.memory_length, device=self.device)
-        self.logging = logging.basicConfig(filename=log_dir, filemode='a', level=logging.INFO)
+        if train:
+            self.logging = logging.basicConfig(filename=log_dir, filemode='a', level=logging.INFO)
 
     def save_models(self, save_path):
         torch.save({"skill_dynamics": self.skill_dynamics.state_dict(),
-                    "actor": self.actor,
-                    "critic1": self.critic1,
-                    "critic2": self.critic2,
-                    "critic_target1": self.critic_target1,
-                    "critic_target2": self.critic_target2
+                    "actor": self.actor.state_dict(),
+                    "critic1": self.critic1.state_dict(),
+                    "critic2": self.critic2.state_dict(),
+                    "critic_target1": self.critic_target1.state_dict(),
+                    "critic_target2": self.critic_target2.state_dict()
                     }, save_path + "/params.pth" )
 
 
@@ -45,6 +46,7 @@ class DADSAgent(SACAgent):
         self.critic2.load_state_dict(checkpoint["critic2"])
         self.critic_target1.load_state_dict(checkpoint["critic_target1"])
         self.critic_target2.load_state_dict(checkpoint["critic_target2"])
+
 
     def _sample_skill(self, skill):
         if skill is None:

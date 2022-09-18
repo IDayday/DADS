@@ -2,6 +2,8 @@ import gym
 import numpy as np
 from dads.agent.DADSAgent import DADSAgent
 from dads.environments.ant_truncated import Ant_Truncated_State
+from dads.environments.HalfCheetah import HalfCheetahEnv
+from dads.environments.Hopper import HopperEnv
 # from mujoco_py import GlfwContext
 import cv2
 import numpy as np
@@ -56,16 +58,23 @@ class Play:
         cv2.destroyAllWindows()
 
 def main():
-    env = Ant_Truncated_State()
+    # env = Ant_Truncated_State()
+    # env = HalfCheetahEnv()
+    env = HopperEnv()
     device = torch.device("cuda")
 
-    agent = DADSAgent(env=env, device=device, n_skills=4, learning_rate=3e-4)
-
-    agent.load_models(load_path=)
-
-    # model_path = "./checkpoints/HalfCheetah-v3/09-15 09-02-20/model/params.pth"
-    video_path = "./checkpoints/ant/video"
-
+    model_path = "./checkpoints/Hopper/09-17 16-34-44/params.pth"
+    # save_path = "checkpoints/Ant" + "/" + time.strftime("%m-%d %H-%M-%S", time.localtime())
+    # save_path = "checkpoints/HalfCheetah" + "/" + time.strftime("%m-%d %H-%M-%S", time.localtime())
+    video_path = "./checkpoints/Hopper/09-17 16-34-44/video"
+    if not os.path.exists(video_path):
+        os.makedirs(video_path)
+    if "Ant" in video_path:
+        pos_shape = 2
+    else:
+        pos_shape = env.env.sim.data.body_xpos.size
+    agent = DADSAgent(env=env, device=device, n_skills=20, learning_rate=3e-4, train=False, pos_shape=pos_shape)
+    agent.load_models(load_path=model_path)
     player = Play(env, agent, video_path)
     player.evaluate()
 
